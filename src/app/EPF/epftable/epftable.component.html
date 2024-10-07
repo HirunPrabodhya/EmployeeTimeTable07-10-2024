@@ -1,0 +1,79 @@
+<div class="row">
+    <form [formGroup]="empForm">
+        <input type="text" 
+                placeholder="enter employee number" 
+                formControlName="empNo">
+    </form>
+</div>
+<div class="row">
+    <div class="table-responsive mt-3" *ngIf="employeesData.length > 0;else error">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>EpfNo</th>
+              <th>Employee Name</th>
+              <ng-container *ngFor="let date of getUniqueDates()">
+                <th>{{ date | date: 'd EEE' }}</th>
+              </ng-container>
+              <th>totalWorkHours</th>
+              <th>totalOTHours</th>
+              <th>totalLateDays</th>
+             
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let employee of filteredtransformedEmps">
+              <tr>
+               
+                <td rowspan="4">{{ employee.empNo }}</td>
+      
+               
+                <td rowspan="2">{{ employee.employeeName }}</td>
+      
+               
+                <ng-container *ngFor="let date of getUniqueDates()">
+                  <td>{{ employee[date]?.inTime}}</td>
+                </ng-container>
+                <td rowspan="4">{{employee.totalWorkHours}}</td>
+                <td rowspan="4">{{employee.totalOTHours}}</td>
+                <td rowspan="4">{{employee.totalLateDays}}</td>
+              </tr>
+              <tr>
+                
+                <ng-container *ngFor="let date of getUniqueDates()">
+                  <td>{{ employee[date]?.outTime  }}</td>
+                </ng-container>
+              </tr>
+              <tr>
+               
+                <td >Total Worked Hours</td>
+                <ng-container *ngFor="let date of getUniqueDates()">
+                  <td>{{ employee[date]?.totalWorkedHours }}</td>
+                </ng-container>
+              </tr>
+              <tr>
+              
+                <td >OT Hrs</td>
+                <ng-container *ngFor="let date of getUniqueDates()">
+                  <td>{{ employee[date]?.oTHrs }}</td>
+                </ng-container>
+              </tr>
+
+            </ng-container>
+          </tbody>
+        </table>
+    </div>
+    <ng-template #error>
+        <div class="alert alert-danger" *ngIf="errorMessage">
+            {{errorMessage}}
+        </div>
+    </ng-template>
+</div>
+
+
+
+
+
+
+
+
